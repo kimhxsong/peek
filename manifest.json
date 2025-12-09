@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Peek",
+  "version": "0.1.0",
+  "description": "Inspect UI elements and copy LLM-friendly context.",
+  "permissions": [
+    "activeTab",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/content-script.js"
+      ],
+      "css": [
+        "src/content-script.css"
+      ],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    }
+  ]
+}
