@@ -361,6 +361,26 @@
     setStatus(state.statusKey, state.shortcutKey);
   }
 
+  function clampToViewport(panel) {
+    const rect = panel.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const margin = 8;
+
+    let x = rect.left;
+    let y = rect.top;
+
+    if (x < margin) x = margin;
+    if (y < margin) y = margin;
+    if (x + rect.width > vw - margin) x = vw - rect.width - margin;
+    if (y + rect.height > vh - margin) y = vh - rect.height - margin;
+
+    panel.style.left = `${x}px`;
+    panel.style.top = `${y}px`;
+    panel.style.right = "auto";
+    panel.style.bottom = "auto";
+  }
+
   function setupDrag(panel, handle) {
     handle.addEventListener("mousedown", (e) => {
       if (!state.pinned) {
@@ -387,6 +407,13 @@
       if (state.dragging) {
         state.dragging = false;
         panel.style.transition = "";
+        clampToViewport(panel);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (!state.pinned && panel.style.left) {
+        clampToViewport(panel);
       }
     });
   }
